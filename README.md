@@ -17,3 +17,27 @@ Installez directement depuis PyPI:
 
 ```bash
 pip install filemanager
+
+## 🛠️ Utilisation
+
+from filemanager import load_data, save_data, save_key, exist
+
+filename = "config.json"
+
+# 1. Vérifier si le fichier existe
+print(exist(filename)) # Retourne False ou True
+
+# 2. Sauvegarder des données complètes (Crée le fichier automatiquement s'il n'existe pas)
+data_utilisateurs = {
+    "pseudo": "Valk",
+    "premium": True
+}
+save_data(filename, data_utilisateurs)
+
+# 3. Ajouter ou modifier une clé spécifique facilement
+save_key(filename, "version", "1.0.2")
+
+# 4. Charger les données du fichier
+config = load_data(filename)
+print(config)
+# Résultat : {'pseudo': 'Valk', 'premium': True, 'version': '1.0.2'}
