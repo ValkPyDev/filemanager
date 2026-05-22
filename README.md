@@ -17,6 +17,7 @@ Installez directement depuis PyPI:
 
 ```bash
 pip install filemanager
+```
 
 ## 🛠️ Utilisation
 
