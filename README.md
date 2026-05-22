@@ -21,8 +21,8 @@ pip install filemanager
 
 ## 🛠️ Utilisation
 
+```py
 from filemanager import load_data, save_data, save_key, exist
-
 filename = "config.json"
 
 # 1. Vérifier si le fichier existe
@@ -42,3 +42,4 @@ save_key(filename, "version", "1.0.2")
 config = load_data(filename)
 print(config)
 # Résultat : {'pseudo': 'Valk', 'premium': True, 'version': '1.0.2'}
+```
