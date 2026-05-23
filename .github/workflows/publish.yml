@@ -31,4 +31,4 @@ jobs:
     - name: Publier sur PyPI via Trusted Publishing
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        packages-dir: ./filemanager/dist/
+        packages-dir: ./dist/
