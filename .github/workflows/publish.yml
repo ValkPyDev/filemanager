@@ -1,0 +1,32 @@
+name: Publier sur PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-n-publish:
+    name: Compilation et Publication
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Récupérer le code du dépôt
+      uses: actions/checkout@v4
+
+    - name: Configurer Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Installer les outils de build
+      run: python -m pip install build --user
+
+    - name: Compiler le package
+      run: python -m build
+
+    - name: Publier sur PyPI via Trusted Publishing
+      uses: pypa/gh-action-pypi-publish@release/v1
