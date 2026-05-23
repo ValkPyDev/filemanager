@@ -2,17 +2,19 @@ import os
 import json
 from typing import Any
 
-def create_json(filename: str) -> None:
+def create_json(filename: str, data = {}) -> None:
     """Créer un fichier JSON vide contenant un dictionnaire initial.
 
     Args:
         filename (str): Le chemin ou le nom du fichier à créer.
+        data (dict) (optionnel): Un dictionnaire écrit dans le fichier.
     """
     try:
         with open(filename, "w", encoding="utf-8") as f:
-            json.dump({}, f, ensure_ascii=False, indent=4)
+            json.dump(data, f, ensure_ascii=False, indent=4)
     except Exception as e:
         print(f"[ERREUR] Impossible de créer le fichier '{filename}' | {e}")
+
 
 def exist(filename: str) -> bool:
     """Vérifier si un fichier existe sur le disque.

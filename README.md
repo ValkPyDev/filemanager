@@ -22,7 +22,7 @@ pip install filemanager
 ## 🛠️ Utilisation
 
 ```py
-from filemanager import load_data, save_data, save_key, exist
+from filemanager import load_data, save_data, save_key, exist, create_json
 filename = "config.json"
 
 # 1. Vérifier si le fichier existe
@@ -42,4 +42,11 @@ save_key(filename, "version", "1.0.2")
 config = load_data(filename)
 print(config)
 # Résultat : {'pseudo': 'Valk', 'premium': True, 'version': '1.0.2'}
+
+# 5. Créer un json avec un dictionnaire initial ou non
+create_json(filename)
+# Créer un JSON avec un dictionnaire vide: {}
+
+create_json(filename, {"valeur_de_base": True})
+# Créer un JSON avec un dictionnaire: {"valeur_de_base": True}
 ```
