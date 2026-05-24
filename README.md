@@ -17,13 +17,13 @@ Une bibliothèque Python ultra-légère et robuste pour gérer simplement vos fi
 Installez directement depuis PyPI:
 
 ```bash
-pip install filemanager
+pip install valk-filemanager
 ```
 
 ## 🛠️ Utilisation
 
 ```py
-from filemanager import load_data, save_data, save_key, exist, create_json
+from valk_filemanager import load_data, save_data, save_key, exist, create_json
 filename = "config.json"
 
 # 1. Vérifier si le fichier existe
