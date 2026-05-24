@@ -12,15 +12,65 @@ jobs:
 
     permissions:
       id-token: write
+      contents: write # Requis pour créer des tags et des releases
 
     steps:
     - name: Récupérer le code du dépôt
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Récupère tout l'historique pour la gestion des tags
 
     - name: Configurer Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+
+    - name: Extraire la version du pyproject.toml
+      id: get_version
+      run: |
+        # Script rapide pour parser la version sans dépendance externe heavy
+        VERSION=$(python -c "
+        import re
+        with open('pyproject.toml', 'r') as f:
+            content = f.read()
+        match = re.search(r'version\s*=\s*[\"\']([^\"']+)[\"\']', content)
+        if match:
+            print(match.group(1))
+        ")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Créer le Tag Git et la Release GitHub
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const version = `v${process.env.VERSION}`;
+          
+          // Vérifier si le tag existe déjà
+          try {
+            await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `tags/${version}`
+            });
+            core.info(`Le tag ${version} existe déjà. Passage à l'étape suivante.`);
+          } catch (error) {
+            if (error.status === 404) {
+              core.info(`Création de la release et du tag ${version}...`);
+              await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: version,
+                name: version,
+                body: `Release automatique de la version ${version}`,
+                draft: false,
+                prerelease: false
+              });
+            } else {
+              throw error;
+            }
+          }
 
     - name: Installer les outils de build
       run: python -m pip install build --user
