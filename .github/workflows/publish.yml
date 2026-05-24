@@ -18,7 +18,7 @@ jobs:
     - name: Récupérer le code du dépôt
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Récupère tout l'historique pour la gestion des tags
+        fetch-depth: 0
 
     - name: Configurer Python
       uses: actions/setup-python@v5
@@ -28,15 +28,8 @@ jobs:
     - name: Extraire la version du pyproject.toml
       id: get_version
       run: |
-        # Script rapide pour parser la version sans dépendance externe heavy
-        VERSION=$(python -c "
-        import re
-        with open('pyproject.toml', 'r') as f:
-            content = f.read()
-        match = re.search(r'version\s*=\s*[\"\']([^\"']+)[\"\']', content)
-        if match:
-            print(match.group(1))
-        ")
+        # yq est préinstallé sur ubuntu-latest et sait lire le TOML nativement
+        VERSION=$(yq eval '.project.version' pyproject.toml)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -47,7 +40,6 @@ jobs:
         script: |
           const version = `v${process.env.VERSION}`;
           
-          // Vérifier si le tag existe déjà
           try {
             await github.rest.git.getRef({
               owner: context.repo.owner,
