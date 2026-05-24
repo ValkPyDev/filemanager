@@ -19,7 +19,7 @@ classifiers = [
 
 
 [project.urls]
-"Homepage" = "https://valk-solutions.fr/project/filemanager"
+"Homepage" = "https://valk-solutions.fr/projets/valk-filemanager/"
 
 [tool.hatch.build.targets.wheel]
 packages = ["valk_filemanager"]
